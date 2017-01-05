@@ -54,18 +54,33 @@
 			  $.ajax({
 				   type: "GET",
 				   url: "/rest/item/param/" + node.id,
-				   success: function(data){
-					   if(data){
-						  $.messager.alert("提示", "该类目已经添加，请选择其他类目。", undefined, function(){
-							 $("#itemParamAddTable .selectItemCat").click();
-						  });
-						  return ;
-					  }
-					  $(".addGroupTr").show();
+// 				   success: function(data){
+// 					   if(data){
+// 						  $.messager.alert("提示", "该类目已经添加，请选择其他类目。", undefined, function(){
+// 							 $("#itemParamAddTable .selectItemCat").click();
+// 						  });
+// 						  return ;
+// 					  }
+// 					  $(".addGroupTr").show();
+// 				   },
+				   
+				   statusCode: {
+					   200:function() {
+						   $.messager.alert("提示", "该类目已经添加，请选择其他类目。", undefined, function(){
+						     	$("#itemParamAddTable .selectItemCat").click();
+						   });
+					   },
+					   500:function() {
+						   $(".addGroupTr").show();
+					   },
+					   400:function() {
+						   $(".addGroupTr").show();
+					   },
 				   },
-				   error: function(){
-					   alert("error");
-				   }
+				   
+// 				   error: function(){
+// 					   alert("error");
+// 				   }
 				});
 			}
 		});
