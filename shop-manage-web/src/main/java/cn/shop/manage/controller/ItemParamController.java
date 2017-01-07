@@ -41,4 +41,20 @@ public class ItemParamController {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 	}
 	
+	@RequestMapping(value = "{itemCatId}", method = RequestMethod.POST)
+	public ResponseEntity<Void> saveItemParam(@PathVariable("itemCatId") Long itemCatId, String paramData) {
+		try {
+			LOGGER.info("新增商品模板, itemCatId={}", itemCatId);
+			ItemParam itemParam = new ItemParam();
+			itemParam.setItemCatId(itemCatId);
+			itemParam.setParamData(paramData);
+			itemParamService.save(itemParam);
+			LOGGER.info("新增商品模板成功, itemId={}", itemCatId);
+			return ResponseEntity.status(HttpStatus.CREATED).build();
+		} catch (Exception e) {
+			e.printStackTrace();
+			LOGGER.error("新增商品模板出错！item" + itemCatId, e);
+		}
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	}
 }

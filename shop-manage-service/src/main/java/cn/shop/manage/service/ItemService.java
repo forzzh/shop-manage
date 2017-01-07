@@ -13,6 +13,7 @@ import cn.shop.common.bean.EasyUIResult;
 import cn.shop.manage.mapper.ItemMapper;
 import cn.shop.manage.pojo.Item;
 import cn.shop.manage.pojo.ItemDesc;
+import cn.shop.manage.pojo.ItemParamItem;
 
 @Service
 public class ItemService extends BaseService<Item> {
@@ -23,7 +24,10 @@ public class ItemService extends BaseService<Item> {
 	@Autowired
 	private ItemMapper itemMapper;
 	
-	public Boolean saveItem(Item item, String desc) {
+	@Autowired
+	private ItemParamItemService itemParamItemService;
+	
+	public Boolean saveItem(Item item, String desc, String itemParams) {
 		item.setStatus(1);
 		item.setId(null);
 		Integer itemCount = save(item);
@@ -33,7 +37,12 @@ public class ItemService extends BaseService<Item> {
 		itemDesc.setItemDesc(desc);
 		Integer itemdCount = itemDescService.save(itemDesc);
 		
-		return itemCount.intValue() == 1 && itemdCount.intValue() == 1;
+		ItemParamItem itemParamItem = new ItemParamItem();
+		itemParamItem.setParamData(itemParams);
+		itemParamItem.setItemId(item.getId());
+		Integer ipiCount = itemParamItemService.save(itemParamItem);
+		
+		return itemCount.intValue() == 1 && itemdCount.intValue() == 1 && ipiCount.intValue() == 1;
 	}
 
 	public EasyUIResult queryItemList(Integer page, Integer rows) {
@@ -53,7 +62,7 @@ public class ItemService extends BaseService<Item> {
         return new EasyUIResult(pageInfo.getTotal(), pageInfo.getList());
 	}
 
-	public Boolean updateItem(Item item, String desc) {
+	public Boolean updateItem(Item item, String desc, String itemParams) {
 		
 		item.setStatus(null);
 		Integer itemCount = updateSelective(item);
@@ -64,7 +73,10 @@ public class ItemService extends BaseService<Item> {
 		
 		Integer itemdCount = itemDescService.updateSelective(itemDesc);
 		
-		return itemCount.intValue() == 1 && itemdCount.intValue() == 1;
+		
+		Integer ipiCount = itemParamItemService.updateItemParam(item.getId(), itemParams);
+		
+		return itemCount.intValue() == 1 && itemdCount.intValue() == 1 && ipiCount.intValue() == 1;
 	}
 
 }

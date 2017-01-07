@@ -29,7 +29,7 @@ public class ItemController {
 	private ItemDescService itemDescService;
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> saveItem(Item item, String desc) {
+	public ResponseEntity<Void> saveItem(Item item, String desc, String itemParams) {
 		
 		try {
 			LOGGER.info("新增商品, item={}, desc={}", item, desc);
@@ -37,7 +37,7 @@ public class ItemController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 			}
 			
-			Boolean itemStatus = itemService.saveItem(item, desc);
+			Boolean itemStatus = itemService.saveItem(item, desc, itemParams);
 			if (!itemStatus) {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 			}
@@ -63,7 +63,7 @@ public class ItemController {
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
-	public ResponseEntity<Void> updateItem(Item item, String desc) {
+	public ResponseEntity<Void> updateItem(Item item, String desc, String itemParams) {
 		
 		try {
 			LOGGER.info("修改商品, item={}, desc={}", item, desc);
@@ -71,7 +71,7 @@ public class ItemController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
 			}
 			
-			Boolean itemStatus = itemService.updateItem(item, desc);
+			Boolean itemStatus = itemService.updateItem(item, desc, itemParams);
 			if (!itemStatus) {
 				return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 			}
