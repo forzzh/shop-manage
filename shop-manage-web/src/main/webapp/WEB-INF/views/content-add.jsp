@@ -79,14 +79,17 @@
 				   type: "POST",
 				   url: "/rest/content",
 				   data: $("#contentAddForm").serialize(),
-				   success: function(msg){
-					   $.messager.alert('提示','新增内容成功!');
-   						$("#contentList").datagrid("reload");
-   						TT.closeCurrentWindow();
+				   statusCode: {
+					   201:function() {
+						   $.messager.alert('提示','新增成功!');
+					   },
+					   500:function() {
+						   $.messager.alert('提示','新增失败!');
+					   },
+					   400:function() {
+						   $.messager.alert('提示','参数错误!');
+					   },
 				   },
-				   error: function(){
-					   $.messager.alert('提示','新增内容失败!');
-				   }
 				});
 			},
 			clearForm : function(){
